@@ -8,8 +8,6 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 from datetime import datetime
 
 TOKEN = os.environ.get("BOT_TOKEN")
-CHANNEL_ID = int(os.environ.get("CHANNEL_ID"))
-
 bot = Bot(token=TOKEN)
 app = Flask(__name__)
 dispatcher = Dispatcher(bot, None, use_context=True)
@@ -108,8 +106,12 @@ def handle_callback(update: Update, context: CallbackContext):
     if data == 'publish':
         text = context.user_data.get('post_text', '')
         if text:
-            bot.send_message(chat_id=CHANNEL_ID, text=text)
-            query.edit_message_text("✅ Опубліковано в каналі.")
+            for channel_id in os.environ.get("CHANNEL_IDS", "").split(","):
+                try:
+                    bot.send_message(chat_id=int(channel_id.strip()), text=text)
+                except Exception as e:
+                    print(f"Помилка надсилання в канал {channel_id}: {e}")
+            query.edit_message_text("✅ Опубліковано.")
     elif data == 'edit':
         query.edit_message_text("✏️ Надішли новий текст для публікації.")
     elif data == 'cancel':
@@ -128,7 +130,7 @@ dispatcher.add_handler(MessageHandler(Filters.document.file_extension("xlsx"), h
 dispatcher.add_handler(CallbackQueryHandler(handle_callback))
 dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_edit))
 
-@app.route(f"/webhook", methods=["POST"])
+@app.route("/webhook", methods=["POST"])
 def webhook():
     update = Update.de_json(request.get_json(force=True), bot)
     dispatcher.process_update(update)
