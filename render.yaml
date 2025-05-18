@@ -1,0 +1,15 @@
+
+services:
+  - type: web
+    name: price-bot
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: "python main.py"
+    envVars:
+      - key: BOT_TOKEN
+        value: "вставиш_свій_токен_тут"
+      - key: CHANNEL_ID
+        value: "-1002687909476"
+    autoDeploy: true
+    region: frankfurt
