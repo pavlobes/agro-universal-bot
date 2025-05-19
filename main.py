@@ -136,6 +136,12 @@ def webhook():
 def index():
     return "Бот працює!"
 
+
+@app.route("/hills_secret", methods=["POST"])
+def dummy_secret():
+    return "ok"
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
 app.run(host="0.0.0.0", port=port)
