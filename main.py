@@ -45,6 +45,7 @@ def handle_file(update: Update, context: CallbackContext):
 
 def get_diff_text(old_df, new_df):
     try:
+        message = ""
         old_df.columns = ["Назва", "Регіон", "Ціна", "Публікувати"]
         new_df.columns = ["Назва", "Регіон", "Ціна", "Публікувати"]
 
