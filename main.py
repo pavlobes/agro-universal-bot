@@ -86,25 +86,20 @@ def get_diff_text(old_df, new_df):
             lines.append(f"{mark} {name} | {region}: {price:.0f} грн з ПДВ")
 
         today = datetime.now().strftime("%d.%m.%Y")
-        message = f"""Доброго дня! ТОВ "Хиллс Трейд", Оновлення цін на {today}:
+        message_lines = []
+        message_lines.append(f"Доброго дня! ТОВ "Хиллс Трейд", Оновлення цін на {today}:")
+        message_lines.append("")
+        message_lines.extend(lines)
+        message_lines.append("")
+        message_lines.append("Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.")
+        message_lines.append("")
+        message_lines.append("Контакти менеджерів:")
+        message_lines.append("📞 Інна — +38 (095) 502-22-87 • @kipish_maker2")
+        message_lines.append("📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc")
+        message_lines.append("📧 office@hillstrade.com.ua")
 
-"""
-        message += '
-'.join(lines)
-        message += '
-
-Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.
-'
-        message += '
-Контакти менеджерів:
-'
-        message += '📞 Інна — +38 (095) 502-22-87 • @kipish_maker2
-'
-        message += '📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc
-'
-        message += '📧 office@hillstrade.com.ua'
-
-        return message
+        return "
+".join(message_lines)
 
     except Exception as e:
         return f"Помилка під час обробки: {e}"
