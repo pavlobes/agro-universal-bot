@@ -77,8 +77,7 @@ def get_diff_text(old_df, new_df):
         filtered = merged[merged["Статус"].notna()].copy()
 
         today = datetime.now().strftime("%d.%m.%Y")
-        message = f"Доброго дня! ТОВ 'Хиллс Трейд', Оновлення цін на {today}:
-
+        
 "
 
         for _, row in filtered.iterrows():
