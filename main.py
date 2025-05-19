@@ -126,7 +126,7 @@ dispatcher.add_handler(MessageHandler(Filters.document.file_extension("xlsx"), h
 dispatcher.add_handler(CallbackQueryHandler(handle_callback))
 dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, handle_edit))
 
-@app.route("/webhook", methods=["POST"])
+@app.route("/hills_secret", methods=["POST"])
 def webhook():
     update = Update.de_json(request.get_json(force=True), bot)
     dispatcher.process_update(update)
@@ -135,12 +135,6 @@ def webhook():
 @app.route("/")
 def index():
     return "Бот працює!"
-
-
-@app.route("/hills_secret", methods=["POST"])
-def dummy_secret():
-    return "ok"
-
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 10000))
