@@ -85,7 +85,7 @@ def get_diff_text(old_df, new_df):
             lines.append(f"{mark} {name} | {region}: {price:.0f} грн з ПДВ")
 
         today = datetime.now().strftime("%d.%m.%Y")
-        greeting = f"Доброго дня! Оновлення цін на {today}:" + "
+        greeting = f"Доброго дня! Оновлення цін на {today}:\n\n"
 "
 
         contact_info = (
