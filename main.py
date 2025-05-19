@@ -79,9 +79,7 @@ def get_diff_text(old_df, new_df):
 
         message = ""
         today = datetime.now().strftime("%d.%m.%Y")
-                message += f"Доброго дня! ТОВ \"Хиллс Трейд\", Оновлення цін на {today}:
-
-"
+        message += "Доброго дня! ТОВ \"Хиллс Трейд\", Оновлення цін на " + today + ":
 
 "
 
@@ -109,7 +107,8 @@ def get_diff_text(old_df, new_df):
         return message
 
     except Exception as e:
-        return f"Помилка під час обробки: {e}"
+        return "Помилка під час обробки: " + str(e)
+
 def handle_callback(update: Update, context: CallbackContext):
     query = update.callback_query
     data = query.data
