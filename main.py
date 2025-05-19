@@ -1,3 +1,4 @@
+
 import os
 import pandas as pd
 from flask import Flask, request
@@ -43,7 +44,6 @@ def handle_file(update: Update, context: CallbackContext):
 
     os.replace(LATEST_FILE, PREVIOUS_FILE)
 
-
 def get_diff_text(old_df, new_df):
     try:
         old_df.columns = ["Назва", "Регіон", "Ціна", "Публікувати"]
@@ -60,8 +60,6 @@ def get_diff_text(old_df, new_df):
         new_df["id"] = new_df["Назва"] + " | " + new_df["Регіон"]
 
         merged = pd.merge(old_df, new_df, on="id", how="outer", suffixes=("_старе", "_нове"))
-        merged["Ціна_нове"] = pd.to_numeric(merged["Ціна_нове"], errors="coerce")
-        merged["Ціна_старе"] = pd.to_numeric(merged["Ціна_старе"], errors="coerce")
         merged["Δ"] = merged["Ціна_нове"] - merged["Ціна_старе"]
 
         def status(row):
@@ -87,33 +85,25 @@ def get_diff_text(old_df, new_df):
             mark = row["Статус"]
             lines.append(f"{mark} {name} | {region}: {price:.0f} грн з ПДВ")
 
-        if not lines:
-            return "Змін не знайдено."
-
         today = datetime.now().strftime("%d.%m.%Y")
-        greeting = f"Доброго дня! ТОВ Хиллс Трейд, Оновлення цін на {today}:
+        today = datetime.now().strftime("%d.%m.%Y")
+        greeting = f"Доброго дня! ТОВ Хиллс Трейд, Оновлення цін на {today}:\n\n"
 
-"
         contact_info = (
-            "
-
-Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.
-"
-            "Контакти менеджерів:
-"
-            "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2
-"
-            "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc
-"
+            "\nМожлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.\n"
+            "Контакти менеджерів:\n"
+            "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2\n"
+            "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc\n"
+            "📧 office@hillstrade.com.ua"
+            "\n\nКонтакти менеджерів:\n"
+            "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc\n"
             "📧 office@hillstrade.com.ua"
         )
 
-        return greeting + "
-".join(lines) + contact_info
+        return greeting + "\n".join(lines) + contact_info
 
     except Exception as e:
         return f"Помилка під час обробки: {e}"
-
 
 def handle_callback(update: Update, context: CallbackContext):
     query = update.callback_query
@@ -156,5 +146,4 @@ def index():
     return "Бот працює!"
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=10000)
