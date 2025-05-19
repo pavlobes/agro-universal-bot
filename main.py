@@ -60,6 +60,21 @@ def get_diff_text(old_df, new_df):
         new_df["id"] = new_df["Назва"] + " | " + new_df["Регіон"]
 
         merged = pd.merge(old_df, new_df, on="id", how="outer", suffixes=("_старе", "_нове"))
+
+        def status(row):
+            if pd.isna(row["Ціна_старе"]):
+                return "🆕"
+            elif row["Δ"] > 0:
+                return "🔼"
+            elif row["Δ"] < 0:
+                return "🔽"
+            elif str(row.get("Публікувати_нове", "")).strip() == "+":
+                return "✅"
+            else:
+                return None
+
+        merged["Статус"] = merged.apply(status, axis=1)
+        filtered = merged[merged["Статус"].notna()].copy()
         merged["Δ"] = merged["Ціна_нове"] - merged["Ціна_старе"]
 
         def status(row):
