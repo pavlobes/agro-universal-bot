@@ -50,10 +50,10 @@ def get_diff_text(old_df, new_df):
 
         old_df["Ціна"] = pd.to_numeric(old_df["Ціна"], errors="coerce")
         new_df["Ціна"] = pd.to_numeric(new_df["Ціна"], errors="coerce")
-        old_df["Назва"] = old_df["Назва"].astype(str).str.strip()
-        new_df["Назва"] = new_df["Назва"].astype(str).str.strip()
-        old_df["Регіон"] = old_df["Регіон"].astype(str).str.strip()
-        new_df["Регіон"] = new_df["Регіон"].astype(str).str.strip()
+        old_df["Назва"] = old_df["Назва"].str.strip()
+        new_df["Назва"] = new_df["Назва"].str.strip()
+        old_df["Регіон"] = old_df["Регіон"].str.strip()
+        new_df["Регіон"] = new_df["Регіон"].str.strip()
 
         old_df["id"] = old_df["Назва"] + " | " + old_df["Регіон"]
         new_df["id"] = new_df["Назва"] + " | " + new_df["Регіон"]
@@ -76,25 +76,35 @@ def get_diff_text(old_df, new_df):
         merged["Статус"] = merged.apply(status, axis=1)
         filtered = merged[merged["Статус"].notna()].copy()
 
-        today = datetime.now().strftime("%d.%m.%Y")
-        
-
+        lines = []
         for _, row in filtered.iterrows():
             name = row.get("Назва_нове") or row.get("Назва_старе")
             region = row.get("Регіон_нове") or row.get("Регіон_старе")
             price = row.get("Ціна_нове")
             mark = row["Статус"]
-            if pd.notna(price):
-                message += f"{mark} {name} | {region}: {price:.0f} грн з ПДВ\n"
+            lines.append(f"{mark} {name} | {region}: {price:.0f} грн з ПДВ")
 
-        message += "Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.\n"
-        message += "Контакти менеджерів:\n"
-        message += "📧 office@hillstrade.com.ua"
+        today = datetime.now().strftime("%d.%m.%Y")
+        greeting = f"Доброго дня! Оновлення цін на {today}:" + "
+"
 
-        return message
+        contact_info = (
+            "
+
+Контакти менеджерів:
+"
+            "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2
+"
+            "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc
+"
+            "📧 office@hillstrade.com.ua"
+        )
+
+        return greeting + "
+".join(lines) + contact_info
 
     except Exception as e:
-        return "Помилка під час обробки: " + str(e)
+        return f"Помилка під час обробки: {e}"
 
 def handle_callback(update: Update, context: CallbackContext):
     query = update.callback_query
