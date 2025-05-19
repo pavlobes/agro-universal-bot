@@ -79,7 +79,9 @@ def get_diff_text(old_df, new_df):
 
         message = ""
         today = datetime.now().strftime("%d.%m.%Y")
-        message += "Доброго дня! ТОВ \"Хиллс Трейд\", Оновлення цін на " + today + ":
+                message += f"Доброго дня! ТОВ \"Хиллс Трейд\", Оновлення цін на {today}:
+
+"
 
 "
 
