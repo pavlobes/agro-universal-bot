@@ -51,10 +51,10 @@ def get_diff_text(old_df, new_df):
 
         old_df["Ціна"] = pd.to_numeric(old_df["Ціна"], errors="coerce")
         new_df["Ціна"] = pd.to_numeric(new_df["Ціна"], errors="coerce")
-        old_df["Назва"] = old_df["Назва"].str.strip()
-        new_df["Назва"] = new_df["Назва"].str.strip()
-        old_df["Регіон"] = old_df["Регіон"].str.strip()
-        new_df["Регіон"] = new_df["Регіон"].str.strip()
+        old_df["Назва"] = old_df["Назва"].astype(str).str.strip()
+        new_df["Назва"] = new_df["Назва"].astype(str).str.strip()
+        old_df["Регіон"] = old_df["Регіон"].astype(str).str.strip()
+        new_df["Регіон"] = new_df["Регіон"].astype(str).str.strip()
 
         old_df["id"] = old_df["Назва"] + " | " + old_df["Регіон"]
         new_df["id"] = new_df["Назва"] + " | " + new_df["Регіон"]
@@ -79,16 +79,17 @@ def get_diff_text(old_df, new_df):
 
         message = ""
         today = datetime.now().strftime("%d.%m.%Y")
-        message += f'Доброго дня! ТОВ "Хиллс Трейд", Оновлення цін на {today}:
+        message += f"Доброго дня! ТОВ "Хиллс Трейд", Оновлення цін на {today}:
 
-'
+"
 
         for _, row in filtered.iterrows():
             name = row.get("Назва_нове") or row.get("Назва_старе")
             region = row.get("Регіон_нове") or row.get("Регіон_старе")
             price = row.get("Ціна_нове")
             mark = row["Статус"]
-            message += f"{mark} {name} | {region}: {price:.0f} грн з ПДВ
+            if pd.notna(price):
+                message += f"{mark} {name} | {region}: {price:.0f} грн з ПДВ
 "
 
         message += "
@@ -107,7 +108,6 @@ def get_diff_text(old_df, new_df):
 
     except Exception as e:
         return f"Помилка під час обробки: {e}"
-
 def handle_callback(update: Update, context: CallbackContext):
     query = update.callback_query
     data = query.data
