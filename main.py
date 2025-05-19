@@ -99,7 +99,8 @@ def get_diff_text(old_df, new_df):
         message_lines.append("📧 office@hillstrade.com.ua")
 
         return "
-".join(message_lines)
+".join(message_lines).replace('\n', '
+')
 
     except Exception as e:
         return f"Помилка під час обробки: {e}"
