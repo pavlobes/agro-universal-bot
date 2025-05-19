@@ -60,6 +60,9 @@ def get_diff_text(old_df, new_df):
         new_df["id"] = new_df["Назва"] + " | " + new_df["Регіон"]
 
         merged = pd.merge(old_df, new_df, on="id", how="outer", suffixes=("_старе", "_нове"))
+        merged["Ціна_нове"] = pd.to_numeric(merged["Ціна_нове"], errors="coerce")
+        merged["Ціна_старе"] = pd.to_numeric(merged["Ціна_старе"], errors="coerce")
+        merged["Δ"] = merged["Ціна_нове"] - merged["Ціна_старе"]
 
         def status(row):
             if pd.isna(row["Ціна_старе"]):
