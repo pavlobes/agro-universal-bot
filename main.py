@@ -120,7 +120,7 @@ def handle_callback(update: Update, context: CallbackContext):
         if text:
             for channel_id in os.environ.get("CHANNEL_IDS", "").split(","):
                 try:
-                    bot.send_message(chat_id=int(channel_id.strip()), text=text)
+                    bot.send_message(chat_id=int(channel_id.strip()), text=text, parse_mode="HTML")
                 except Exception as e:
                     print(f"Помилка надсилання в канал {channel_id}: {e}")
             query.edit_message_text("✅ Опубліковано.")
