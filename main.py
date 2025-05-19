@@ -78,7 +78,6 @@ def get_diff_text(old_df, new_df):
 
         today = datetime.now().strftime("%d.%m.%Y")
         
-"
 
         for _, row in filtered.iterrows():
             name = row.get("Назва_нове") or row.get("Назва_старе")
@@ -87,18 +86,13 @@ def get_diff_text(old_df, new_df):
             mark = row["Статус"]
             if pd.notna(price):
                 message += f"{mark} {name} | {region}: {price:.0f} грн з ПДВ
-"
 
         message += "
 Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.
-"
         message += "
 Контакти менеджерів:
-"
         message += "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2
-"
         message += "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc
-"
         message += "📧 office@hillstrade.com.ua"
 
         return message
