@@ -85,7 +85,7 @@ def get_diff_text(old_df, new_df):
             price = row.get("Ціна_нове")
             mark = row["Статус"]
             if pd.notna(price):
-                message += f"{mark} {name} | {region}: {price:.0f} грн з ПДВ
+                message += f"{mark} {name} | {region}: {price:.0f} грн з ПДВ\n"
 
         message += "
 Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.
