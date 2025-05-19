@@ -87,16 +87,14 @@ def get_diff_text(old_df, new_df):
         today = datetime.now().strftime("%d.%m.%Y")
         greeting = f"Доброго дня! ТОВ Хиллс Трейд, Оновлення цін на {today}:\n\n"
 
-        contact_info = (
-
-Контакти менеджерів:
+        message += "Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.\n"
+        message += "Контакти менеджерів:\n"
         message += "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2\n"
         message += "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc\n"
-            "📧 office@hillstrade.com.ua"
-        )
+        message += "📧 office@hillstrade.com.ua\n"
 
-        return greeting + "
-".join(lines) + contact_info
+        return greeting + message
+        message += "📧 office@hillstrade.com.ua\n"
 
     except Exception as e:
         return f"Помилка під час обробки: {e}"
