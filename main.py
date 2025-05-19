@@ -85,18 +85,13 @@ def get_diff_text(old_df, new_df):
             lines.append(f"{mark} {name} | {region}: {price:.0f} грн з ПДВ")
 
         today = datetime.now().strftime("%d.%m.%Y")
-        greeting = f"Доброго дня! Оновлення цін на {today}:\n\n"
-"
+        greeting = f"Доброго дня! ТОВ Хиллс Трейд, Оновлення цін на {today}:\n\n"
 
         contact_info = (
-            "
 
 Контакти менеджерів:
-"
             "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2
-"
             "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc
-"
             "📧 office@hillstrade.com.ua"
         )
 
