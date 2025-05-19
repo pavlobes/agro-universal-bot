@@ -43,9 +43,9 @@ def handle_file(update: Update, context: CallbackContext):
 
     os.replace(LATEST_FILE, PREVIOUS_FILE)
 
+
 def get_diff_text(old_df, new_df):
     try:
-        message = ""
         old_df.columns = ["Назва", "Регіон", "Ціна", "Публікувати"]
         new_df.columns = ["Назва", "Регіон", "Ціна", "Публікувати"]
 
@@ -78,22 +78,6 @@ def get_diff_text(old_df, new_df):
 
         merged["Статус"] = merged.apply(status, axis=1)
         filtered = merged[merged["Статус"].notna()].copy()
-        merged["Δ"] = merged["Ціна_нове"] - merged["Ціна_старе"]
-
-        def status(row):
-            if pd.isna(row["Ціна_старе"]):
-                return "🆕"
-            elif row["Δ"] > 0:
-                return "🔼"
-            elif row["Δ"] < 0:
-                return "🔽"
-            elif str(row.get("Публікувати_нове", "")).strip() == "+":
-                return "✅"
-            else:
-                return None
-
-        merged["Статус"] = merged.apply(status, axis=1)
-        filtered = merged[merged["Статус"].notna()].copy()
 
         lines = []
         for _, row in filtered.iterrows():
@@ -103,20 +87,33 @@ def get_diff_text(old_df, new_df):
             mark = row["Статус"]
             lines.append(f"{mark} {name} | {region}: {price:.0f} грн з ПДВ")
 
+        if not lines:
+            return "Змін не знайдено."
+
         today = datetime.now().strftime("%d.%m.%Y")
-        greeting = f"Доброго дня! ТОВ Хиллс Трейд, Оновлення цін на {today}:\n\n"
+        greeting = f"Доброго дня! ТОВ Хиллс Трейд, Оновлення цін на {today}:
 
-        message += "Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.\n"
-        message += "Контакти менеджерів:\n"
-        message += "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2\n"
-        message += "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc\n"
-        message += "📧 office@hillstrade.com.ua\n"
+"
+        contact_info = (
+            "
 
-        return greeting + message
-        message += "📧 office@hillstrade.com.ua\n"
+Можлива доставка у ваш регіон або склад, за деталями звертайтесь до менеджера.
+"
+            "Контакти менеджерів:
+"
+            "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2
+"
+            "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc
+"
+            "📧 office@hillstrade.com.ua"
+        )
+
+        return greeting + "
+".join(lines) + contact_info
 
     except Exception as e:
         return f"Помилка під час обробки: {e}"
+
 
 def handle_callback(update: Update, context: CallbackContext):
     query = update.callback_query
