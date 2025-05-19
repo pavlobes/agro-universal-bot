@@ -90,8 +90,8 @@ def get_diff_text(old_df, new_df):
         contact_info = (
 
 Контакти менеджерів:
-            "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2
-            "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc
+        message += "📞 Інна — +38 (095) 502-22-87 • @kipish_maker2\n"
+        message += "📞 Павло — +38 (067) 519-36-86 • @Pawa_fbc\n"
             "📧 office@hillstrade.com.ua"
         )
 
